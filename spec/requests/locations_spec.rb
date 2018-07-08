@@ -86,5 +86,13 @@ RSpec.describe 'Locations API', type: :request do
         expect(response).to have_http_status(204)
       end
     end
+
+    context 'when the record does not exist' do
+      before { put "/locations/47", params: valid_attributes }
+
+      it 'returns status code 422' do
+        expect(response).to have_http_status(404)
+      end
+    end
   end
 end
