@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'pp'
 
 RSpec.describe 'Locations API', type: :request do
   let!(:locations) { create_list(:location, 5) }
