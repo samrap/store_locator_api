@@ -43,4 +43,20 @@ RSpec.describe 'Locations API', type: :request do
       end
     end
   end
+
+  describe 'POST /locations' do
+    let(:valid_attributes) { { name: 'Stripe' } }
+
+    context 'when the request is valid' do
+      before { post '/locations', params: valid_attributes }
+
+      it 'creates a location' do
+        expect(response_json['name']).to eq(valid_attributes[:name])
+      end
+
+      it 'returns status code 201' do
+        expect(response).to have_http_status(201)
+      end
+    end
+  end
 end
