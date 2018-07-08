@@ -58,5 +58,18 @@ RSpec.describe 'Locations API', type: :request do
         expect(response).to have_http_status(201)
       end
     end
+
+    context 'when the request is invalid' do
+      # The `name` field is required
+      before { post '/locations' }
+
+      it 'returns status code 422' do
+        expect(response).to have_http_status(422)
+      end
+
+      it 'returns an error message' do
+        expect(response.body).to match(/Name can't be blank/)
+      end
+    end
   end
 end
