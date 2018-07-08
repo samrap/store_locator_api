@@ -71,4 +71,20 @@ RSpec.describe 'Locations API', type: :request do
       end
     end
   end
+
+  describe 'PUT /locations/:id' do
+    let(:valid_attributes) { { name: 'Stripe' } }
+
+    context 'when the record exists' do
+      before { put "/locations/#{location_id}", params: valid_attributes }
+
+      it 'updates the record' do
+        expect(Location.find(location_id).name).to eq(valid_attributes[:name])
+      end
+
+      it 'returns status code 204' do
+        expect(response).to have_http_status(204)
+      end
+    end
+  end
 end

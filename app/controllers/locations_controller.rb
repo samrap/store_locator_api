@@ -1,5 +1,5 @@
 class LocationsController < ApplicationController
-  before_action :set_location, only: [:show]
+  before_action :set_location, only: [:show, :update]
   
   def index
     @locations = Location.all
@@ -13,6 +13,11 @@ class LocationsController < ApplicationController
 
   def show
     json_response(@location)
+  end
+
+  def update
+    @location.update!(location_params)
+    head :no_content
   end
 
   private
