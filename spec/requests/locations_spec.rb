@@ -95,4 +95,16 @@ RSpec.describe 'Locations API', type: :request do
       end
     end
   end
+
+  describe 'DELETE /locations/:id' do
+    before { delete "/locations/#{location_id}" }
+
+    it 'deletes the location' do
+      expect(Location.exists?(location_id)).to be(false)
+    end
+
+    it 'returns status code 204' do
+      expect(response).to have_http_status(204)
+    end
+  end
 end
