@@ -1,7 +1,11 @@
 class LocationsController < ApplicationController
   def index
     @locations = Location.all
+    json_response(@locations)
+  end
 
-    render json: @locations, status: 200
+  def show
+    @location = Location.find(params['id'])
+    json_response(@location)
   end
 end
