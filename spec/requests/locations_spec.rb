@@ -30,5 +30,17 @@ RSpec.describe 'Locations API', type: :request do
         expect(response_json['id']).to eq(location_id)
       end
     end
+
+    context 'when the record does not exist' do
+      let(:location_id) { 47 }
+
+      it 'returns status code 404' do
+        expect(response).to have_http_status(404)
+      end
+
+      it 'returns an error message' do
+        expect(response.body).to match(/Couldn't find Location/)
+      end
+    end
   end
 end
