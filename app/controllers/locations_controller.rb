@@ -13,7 +13,6 @@ class LocationsController < ApplicationController
 
   def create
     @location = Location.create!(location_params)
-    pp(@location)
     json_response(@location, :created)
   end
 
