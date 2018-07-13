@@ -13,6 +13,7 @@ class LocationsController < ApplicationController
 
   def create
     @location = Location.create!(location_params)
+    pp(@location)
     json_response(@location, :created)
   end
 
@@ -37,6 +38,15 @@ class LocationsController < ApplicationController
   end
 
   def location_params
-    params.permit(:name)
+    params.permit(
+      :name,
+      :address,
+      :address_2,
+      :city,
+      :state,
+      :zip,
+      :latitude,
+      :longitude
+    )
   end
 end

@@ -4,6 +4,37 @@ RSpec.describe 'Locations API', type: :request do
   let!(:locations) { create_list(:location, 5) }
   let(:location_id) { locations.first.id }
 
+  # Stup out the Geocoder so we aren't making real requests
+  # See: https://github.com/alexreisner/geocoder/issues/1258 for why we need to
+  # define both the `coordinates` and `latitude`, `longitude`.
+  Geocoder.configure(lookup: :test)
+  Geocoder::Lookup::Test.set_default_stub([
+    {
+      'coordinates'  => [33.6595, -117.9988],
+      'latitude'     => 33.6595,
+      'longitude'    => -117.9988,
+      'address'      => 'Huntington Beach, CA, USA',
+      'state'        => 'California',
+      'state_code'   => 'CA',
+      'country'      => 'United States',
+      'country_code' => 'US'
+    }
+  ])
+  Geocoder::Lookup::Test.add_stub(
+    '721 Pine St, Seattle, WA', [
+      {
+        'coordinates'  => [47.6062, -122.3321],
+        'latitude'     => 47.6062,
+        'longitude'    => -122.3321,
+        'address'      => '721 Pine St, Seattle, WA, USA',
+        'state'        => 'Washington',
+        'state_code'   => 'WA',
+        'country'      => 'United States',
+        'country_code' => 'US'
+      }
+    ]
+  )
+
   describe 'GET /locations' do
     before { get '/locations' }
 
@@ -24,22 +55,7 @@ RSpec.describe 'Locations API', type: :request do
       })
     end
 
-    # Stup out the Geocoder so we aren't making real requests
-    Geocoder.configure(lookup: :test)
-    Geocoder::Lookup::Test.add_stub(
-      'Seattle WA', [
-        {
-          'coordinates'  => [47.6062, -122.3321],
-          'address'      => 'Seattle, WA, USA',
-          'state'        => 'Washington',
-          'state_code'   => 'WA',
-          'country'      => 'United States',
-          'country_code' => 'US'
-        }
-      ]
-    )
-
-    before { get '/locations?search=Seattle+WA' }
+    before { get '/locations?search=721+Pine+St,+Seattle,+WA' }
 
     it 'returns locations near seattle' do
       # Ensure only two items are returned and that they are the geocoded
@@ -78,13 +94,25 @@ RSpec.describe 'Locations API', type: :request do
   end
 
   describe 'POST /locations' do
-    let(:valid_attributes) { { name: 'Stripe' } }
+    let(:valid_attributes) do
+      {
+        name: 'Stripe',
+        address: '721 Pine St',
+        city: 'Seattle',
+        state: 'WA'
+      }
+    end
 
     context 'when the request is valid' do
       before { post '/locations', params: valid_attributes }
 
       it 'creates a location' do
         expect(response_json['name']).to eq(valid_attributes[:name])
+      end
+
+      it 'geocodes the location' do
+        expect(response_json['latitude']).not_to be_nil
+        expect(response_json['longitude']).not_to be_nil
       end
 
       it 'returns status code 201' do
