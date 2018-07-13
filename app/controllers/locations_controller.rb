@@ -2,7 +2,12 @@ class LocationsController < ApplicationController
   before_action :set_location, only: [:show, :update, :destroy]
   
   def index
-    @locations = Location.all
+    if (params[:search])
+      @locations = Location.near(params[:search])
+    else
+      @locations = Location.all
+    end
+
     json_response(@locations)
   end
 

@@ -10,12 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_07_234242) do
+ActiveRecord::Schema.define(version: 2018_07_13_033620) do
 
   create_table "locations", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "address"
+    t.string "address_2"
+    t.string "city", limit: 64
+    t.string "state", limit: 2
+    t.string "zip", limit: 10
+    t.float "latitude"
+    t.float "longitude"
   end
 
 end
