@@ -6,7 +6,12 @@ FactoryBot.define do
     city { Faker::Address.city }
     state { Faker::Address.state_abbr }
     zip { Faker::Address.zip }
-    latitude { Faker::Address.latitude }
-    longitude { Faker::Address.longitude }
+  end
+
+  factory :seattle_location, class: Location do
+    name { Faker::RickAndMorty.location }
+    address '721 Pine St'
+    city 'Seattle'
+    state 'WA'
   end
 end

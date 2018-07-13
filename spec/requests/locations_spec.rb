@@ -47,15 +47,26 @@ RSpec.describe 'Locations API', type: :request do
     end
   end
 
-  describe 'GET /locations?search' do
+  describe 'GET /locations search by address' do
     let!(:seattle_locations) do
-      create_list(:location, 2, {
-        latitude: 47.6062,
-        longitude: -122.3321
-      })
+      create_list(:seattle_location, 2)
     end
 
     before { get '/locations?search=721+Pine+St,+Seattle,+WA' }
+
+    it 'returns locations near seattle' do
+      # Ensure only two items are returned and that they are the geocoded
+      # locations we just created.
+      expect(response_json.length).to eq(2)
+      expect(response_json[0]['name']).to match(seattle_locations[0]['name'])
+      expect(response_json[1]['name']).to match(seattle_locations[1]['name'])
+    end
+  end
+
+  describe 'GET /locations search by coordinates' do
+    let!(:seattle_locations) { create_list(:seattle_location, 2) }
+
+    before { get '/locations?search=47.6062,-122.3321' }
 
     it 'returns locations near seattle' do
       # Ensure only two items are returned and that they are the geocoded
