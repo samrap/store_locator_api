@@ -16,6 +16,7 @@ A RESTful API written in Rails that provides functionality for a store locator. 
 In the following section, we will explore the various endpoints and parameters for the API.
 
 ### All locations
+---
 
 Returns JSON data containing every location in the database.
 
@@ -41,6 +42,7 @@ Returns JSON data containing every location in the database.
   There is no error response for this request. If no locations are present, empty JSON will be returned.
 
 ### Show Location
+---
 
 Returns JSON for a single location resource.
 
@@ -60,6 +62,7 @@ Returns JSON for a single location resource.
     **Content:** `{"message": "Couldn't find Location with 'id'=:id"}`
 
 ### Create Location
+---
 
 Create a new location resource.
 
@@ -90,6 +93,7 @@ Create a new location resource.
     **Content:** `{"message": "Validation failed: Name can't be blank"}`
 
 ### Update Location
+---
 
 Update an existing location resource.
 
@@ -119,6 +123,7 @@ Update an existing location resource.
     **Content:** `{"message": "Couldn't find Location with 'id'=:id"}`
 
 ### Destroy Location
+---
 
 Create a new location resource.
 
