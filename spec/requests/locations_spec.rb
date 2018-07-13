@@ -117,11 +117,11 @@ RSpec.describe 'Locations API', type: :request do
     end
   end
 
-  describe 'PUT /locations/:id' do
+  describe 'PATCH /locations/:id' do
     let(:valid_attributes) { { name: 'Stripe' } }
 
     context 'when the record exists' do
-      before { put "/locations/#{location_id}", params: valid_attributes }
+      before { patch "/locations/#{location_id}", params: valid_attributes }
 
       it 'updates the record' do
         expect(Location.find(location_id).name).to eq(valid_attributes[:name])
